@@ -11,17 +11,10 @@ import java.util.regex.Pattern
 
 class ThinApkRExtension {
 
-    //是否删除由于ButterKnife产生的 R2.java 类
-    boolean deleteR2
-
     NamedDomainObjectContainer<KeepRInfo> keepInfo
 
     ThinApkRExtension(Project project) {
         keepInfo = project.container(KeepRInfo)
-    }
-
-    void deleteR2(boolean flag) {
-        this.deleteR2 = flag
     }
 
     void keepInfo(Action<NamedDomainObjectContainer<KeepRInfo>> action) {

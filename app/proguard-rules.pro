@@ -43,3 +43,7 @@
 -keep class **.R$* {
     *;
 }
+
+
+-dontwarn **.R$*
+-dontwarn **.R

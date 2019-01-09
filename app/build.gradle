@@ -1,17 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.jakewharton.butterknife'
-//apply plugin: 'com.hm.plugin.time'
-//apply plugin: 'com.hm.plugin.thinapk'
+apply plugin: 'com.hm.plugin.thinapk'
 
-/*taskExecTime {
-    threshold 0
-    sorted false
-}*/
-
-/*
 thinRConfig {
-    deleteR2 true
-
     keepInfo {
         mipmap {
             keepRPackageName = "com.hm.iou.thinapk.demo"
@@ -21,7 +12,6 @@ thinRConfig {
         }
     }
 }
-*/
 
 android {
     compileSdkVersion 26
@@ -33,10 +23,25 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    signingConfigs {
+        hmiou {
+            //
+        }
+    }
+
     buildTypes {
         release {
+            // 是否开启混淆
             minifyEnabled true
+            // 开启ZipAlign优化
+            zipAlignEnabled true
+            //去掉不用资源
+            shrinkResources true
+            // 混淆文件位置
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            // 使用release签名
+            signingConfig signingConfigs.hmiou
         }
     }
 }
@@ -52,7 +57,6 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.4.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
 
-//    compile project(':library1')
-    compile 'com.heima.iou:hmthinapkliblocal:1.0.0'
+    compile project(':library1')
 
 }

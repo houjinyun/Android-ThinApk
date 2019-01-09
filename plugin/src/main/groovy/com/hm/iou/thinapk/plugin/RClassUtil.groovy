@@ -31,7 +31,7 @@ class RClassUtil {
             return
         }
         def fullClassName = getFullClassName(file.getAbsolutePath())
-        println "fullClassName = ${fullClassName}"
+        println "需要收集的R类信息：fullClassName = ${fullClassName}"
         new FileInputStream(file).withStream { InputStream is ->
             ClassReader classReader = new ClassReader(is)
             ClassVisitor classVisitor = new ClassVisitor(Opcodes.ASM5) {
@@ -44,7 +44,7 @@ class RClassUtil {
                     return super.visitField(access, name, desc, signature, value)
                 }
             }
-            classReader.accept(classVisitor, ClassReader.EXPAND_FRAMES)
+            classReader.accept(classVisitor, 0)
         }
     }
 
@@ -55,6 +55,7 @@ class RClassUtil {
      */
     static void replaceAndDeleteRInfo(File classFile, ThinApkRExtension extension) {
         def fullClassName = getFullClassName(classFile.getAbsolutePath())
+        //如果是除了R&styleable.class的除外
         if (isRFileExceptStyleable(classFile.getAbsolutePath())) {
             ThinApkRExtension.KeepRInfo keepRInfo = extension.shouldKeepRFile(fullClassName)
             if (keepRInfo != null) {
@@ -62,7 +63,7 @@ class RClassUtil {
 
                 new FileInputStream(classFile).withStream { InputStream is ->
                     ClassReader classReader = new ClassReader(is.bytes)
-                    ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES)
+                    ClassWriter classWriter = new ClassWriter(0)
                     ClassVisitor classVisitor = new ClassVisitor(Opcodes.ASM5, classWriter) {
                         @Override
                         FieldVisitor visitField(int access, String name, String desc, String signature, Object value) {
@@ -77,7 +78,7 @@ class RClassUtil {
                             return super.visitField(access, name, desc, signature, value)
                         }
                     }
-                    classReader.accept(classVisitor, ClassReader.EXPAND_FRAMES)
+                    classReader.accept(classVisitor, 0)
 
                     byte[] bytes = classWriter.toByteArray()
                     def newClassFile = new File(classFile.getParentFile(), classFile.name + ".tmp")
@@ -91,7 +92,7 @@ class RClassUtil {
                 }
 
             } else {
-                println "删除R文件：${classFile.getAbsolutePath()}"
+                println "删除R文件：${fullClassName}"
                 classFile.delete()
             }
         } else {
@@ -189,7 +190,12 @@ class RClassUtil {
                     void visitFieldInsn(int opcode, String owner, String name1, String desc1) {
                         String key = owner + name1
                         Integer value = mRInfoMap.get(key)
-                        value != null ? super.visitLdcInsn(value) : super.visitFieldInsn(opcode, owner, name1, desc1)
+                        if (value != null) {
+                            println "替换对R.class的直接引用：${owner} - ${name1}"
+                            super.visitLdcInsn(value)
+                        } else {
+                            super.visitFieldInsn(opcode, owner, name1, desc1)
+                        }
                     }
                 }
                 return methodVisitor
