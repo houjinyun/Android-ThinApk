@@ -13,9 +13,8 @@ class ThinApkRTransform extends Transform {
     Project project
     ThinApkRExtension extension
 
-    ThinApkRTransform(Project project, ThinApkRExtension thinApkRExtension) {
+    ThinApkRTransform(Project project) {
         this.project = project
-        this.extension = thinApkRExtension
     }
 
     @Override
@@ -40,12 +39,16 @@ class ThinApkRTransform extends Transform {
 
     @Override
     void transform(Context context, Collection<TransformInput> inputs, Collection<TransformInput> referencedInputs, TransformOutputProvider outputProvider, boolean isIncremental) throws IOException, TransformException, InterruptedException {
+        extension = project.extensions.getByName("thinRConfig")
+
         println "----------------------------------"
         println "------ThinApkRTransform start-----"
 
         //先删除原来的缓存文件
         outputProvider.deleteAll()
         RClassUtil.clear()
+
+        //记录所有的jar包
         def jarList = []
 
         println "----第一次遍历，开始收集R类信息----"
@@ -86,9 +89,8 @@ class ThinApkRTransform extends Transform {
         }
         println "----R类信息收集完毕----"
 
-        println "----开始删除替换所有引用R.java类的地方----"
+        println "----开始删除替换所有引用R.class的地方----"
         inputs.each { TransformInput input ->
-            //第二次循环，删除R.java类信息，以及R2.java类
             input.directoryInputs.each { DirectoryInput directoryInput ->
                 if (directoryInput.file.isDirectory()) {
                     directoryInput.file.eachFileRecurse {File file ->
@@ -105,7 +107,7 @@ class ThinApkRTransform extends Transform {
             }
         }
 
-        //删除R信息
+        //处理 jar 包里的 class
         for (File jarFile : jarList) {
             println "处理Jar包里的R信息：${jarFile.getAbsolutePath()}"
             RClassUtil.replaceAndDeleteRInfoFromJar(jarFile, extension)

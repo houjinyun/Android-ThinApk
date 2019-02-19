@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     void onClick(View v) {
         if (v.getId() == R.id.btn_start) {
             startActivity(new Intent(this, LibTest1Activity.class));
+            int i = com.hm.library1.R.id.action0;
         }
     }
 

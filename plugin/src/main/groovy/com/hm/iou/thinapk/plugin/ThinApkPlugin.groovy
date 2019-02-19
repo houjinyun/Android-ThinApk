@@ -10,11 +10,8 @@ class ThinApkPlugin implements Plugin<Project>{
     void apply(Project project) {
         def android = project.extensions.getByType(AppExtension)
 
-       def thinApkRExt = project.extensions.create("thinRConfig", ThinApkRExtension, project)
-
-        //对 最后生成的R 文件进行瘦身
-        println "=========插件注册Transform=========="
-        android.registerTransform(new ThinApkRTransform(project, thinApkRExt))
+        project.extensions.create("thinRConfig", ThinApkRExtension, project)
+        android.registerTransform(new ThinApkRTransform(project))
     }
 
 }
