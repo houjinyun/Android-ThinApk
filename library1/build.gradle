@@ -1,9 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: 'maven'
 apply plugin: 'com.jakewharton.butterknife'
-
-apply plugin: 'com.github.dcendents.android-maven'
-group='com.github.houjinyun'
 
 android {
     compileSdkVersion 26
@@ -37,7 +33,4 @@ dependencies {
 
     compile 'com.jakewharton:butterknife:8.4.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
-
-  //  implementation 'com.github.houjinyun:Android-ThinApk:v1.0.0'
-
 }

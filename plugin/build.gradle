@@ -1,6 +1,8 @@
 apply plugin: 'java-library'
 apply plugin: 'groovy'
-apply plugin: 'maven'
+
+apply plugin: 'com.github.dcendents.android-maven'
+group='com.github.houjinyun'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -12,16 +14,4 @@ dependencies {
     compile 'com.android.tools.build:gradle:3.0.1'
 
 
-}
-
-sourceCompatibility = "1.7"
-targetCompatibility = "1.7"
-
-uploadArchives {
-    repositories.mavenDeployer {
-        pom.version = '1.0.0'
-        pom.artifactId = 'hmthinapkpluginlocal'
-        pom.groupId = 'com.heima.iou'
-        repository(url: "file:///Users/hjy/.m2/repository/")
-    }
 }
