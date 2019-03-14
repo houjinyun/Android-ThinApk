@@ -5,13 +5,14 @@ buildscript {
     repositories {
         google()
         jcenter()
-        maven { url 'file:///Users/hjy/.m2/repository/' }
+        maven { url 'https://jitpack.io' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
         classpath 'com.jakewharton:butterknife-gradle-plugin:8.4.0'
 
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
+        classpath 'com.github.houjinyun:Android-ThinApk:1.0'
     }
 }
 

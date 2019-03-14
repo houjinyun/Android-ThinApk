@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.jakewharton.butterknife'
-//apply plugin: 'com.hm.plugin.thinapk'
+apply plugin: 'com.hm.plugin.thinapk'
 
-/*thinRConfig {
+thinRConfig {
     keepInfo {
         mipmap {
             keepRPackageName = "com.hm.iou.thinapk.demo"
@@ -11,7 +11,7 @@ apply plugin: 'com.jakewharton.butterknife'
             keepResNameReg = ["ic_launcher.*"]
         }
     }
-}*/
+}
 
 android {
     compileSdkVersion 26
@@ -24,27 +24,12 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
-    signingConfigs {
-        hmiou {
-            storeFile file('keystore/hmiou.keystore')
-            keyAlias 'iou'
-            keyPassword 'hmswkjiou'
-            storePassword 'hmswkjiou'
-        }
-    }
-
     buildTypes {
         release {
             // 是否开启混淆
-            minifyEnabled true
-            // 开启ZipAlign优化
-            zipAlignEnabled true
-            //去掉不用资源
-            shrinkResources true
+            minifyEnabled false
             // 混淆文件位置
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            // 使用release签名
-            signingConfig signingConfigs.hmiou
         }
     }
 }
