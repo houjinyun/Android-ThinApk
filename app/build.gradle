@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.jakewharton.butterknife'
-apply plugin: 'com.hm.plugin.thinapk'
+//apply plugin: 'com.hm.plugin.thinapk'
 
-thinRConfig {
+/*thinRConfig {
     keepInfo {
         mipmap {
             keepRPackageName = "com.hm.iou.thinapk.demo"
@@ -11,7 +11,7 @@ thinRConfig {
             keepResNameReg = ["ic_launcher.*"]
         }
     }
-}
+}*/
 
 android {
     compileSdkVersion 26
@@ -26,7 +26,10 @@ android {
 
     signingConfigs {
         hmiou {
-            //
+            storeFile file('keystore/hmiou.keystore')
+            keyAlias 'iou'
+            keyPassword 'hmswkjiou'
+            storePassword 'hmswkjiou'
         }
     }
 

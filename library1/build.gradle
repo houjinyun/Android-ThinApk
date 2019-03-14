@@ -2,10 +2,11 @@ apply plugin: 'com.android.library'
 apply plugin: 'maven'
 apply plugin: 'com.jakewharton.butterknife'
 
+apply plugin: 'com.github.dcendents.android-maven'
+group='com.github.houjinyun'
+
 android {
     compileSdkVersion 26
-
-
 
     defaultConfig {
         minSdkVersion 19
@@ -36,13 +37,7 @@ dependencies {
 
     compile 'com.jakewharton:butterknife:8.4.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
-}
 
-uploadArchives {
-    repositories.mavenDeployer {
-        pom.version = '1.0.0'
-        pom.artifactId = 'hmthinapkliblocal'
-        pom.groupId = 'com.heima.iou'
-        repository(url: "file:///Users/hjy/.m2/repository/")
-    }
+  //  implementation 'com.github.houjinyun:Android-ThinApk:v1.0.0'
+
 }
