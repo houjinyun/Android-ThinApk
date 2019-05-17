@@ -219,7 +219,7 @@ class RClassUtil {
     /**
      * 判断该 class 文件是否是 R.class 类，及其内部类如 R$id.class
      *
-     * @param classFilePath class文件的全路径名，例如：/Users/hjy/Desktop/app/build/intermediates/classes/debug/com/hm/library1/R.class
+     * @param classFilePath class文件的全路径名，例如：~app/build/intermediates/classes/debug/com/hm/library1/R.class
      * @return 如果是R.class及其它内部类class则返回true，否则返回false
      */
     static boolean isRClass(String classFilePath) {
@@ -237,7 +237,8 @@ class RClassUtil {
     }
 
     /**
-     * 从形如 /Users/hjy/Desktop/heima/code/gitlab/HM-ThinApk/app/build/intermediates/classes/debug/com/hm/library1/R.class 的类路径中截取出 com/hm/library1/R.class
+     * 从形如 ~/HM-ThinApk/app/build/intermediates/classes/debug/com/hm/library1/R.class 的类路径中截取出 com/hm/library1/R.class
+     * 根据Android Studio版本的不同，编译配置不同，路径也可能不同，例如：app/build/intermediates/javac/officialDebug/compileOfficialDebugJavaWithJavac/classes/android/arch/lifecycle/R.class
      * 不管是当前工程的代码，还是远程依赖的aar包，在打包编译时，都会在工程的 app/build/intermediates/classes 路径下生成一系列R.class文件，
      * 根据打包模式是 debug 还是 release来区分，从中可以截取出 R.class 的包名了。
      *
@@ -245,13 +246,22 @@ class RClassUtil {
      * @return 返回类似 "com/hm/library1/R.class"、"com/hm/library1/R$mipmap.class"，其实就是类的全路径class名
      */
     static String getFullClassName(String filePath) {
-        String mode = "/debug/"
+        println "${filePath}"
+
+        /*String mode = "/debug/"
         int index = filePath.indexOf(mode)
         if (index == -1) {
             mode = "/release/"
             index = filePath.indexOf(mode)
         }
         return filePath.substring(index) - "${mode}"
+        */
+
+        int index = filePath.indexOf("/classes")
+        filePath = filePath.substring(index) - "/classes" - "/debug" - "/release"
+        filePath = filePath.substring(1)
+        println filePath
+        return filePath
     }
 
 }
