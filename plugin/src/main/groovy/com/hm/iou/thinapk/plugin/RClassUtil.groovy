@@ -248,16 +248,17 @@ class RClassUtil {
     static String getFullClassName(String filePath) {
         println "${filePath}"
 
-        /*String mode = "/debug/"
+        String mode = "/debug/"
         int index = filePath.indexOf(mode)
         if (index == -1) {
             mode = "/release/"
             index = filePath.indexOf(mode)
         }
-        return filePath.substring(index) - "${mode}"
-        */
+        if (index != -1) {
+            return filePath.substring(index) - "${mode}"
+        }
 
-        int index = filePath.indexOf("/classes")
+        index = filePath.indexOf("/classes")
         filePath = filePath.substring(index) - "/classes" - "/debug" - "/release"
         filePath = filePath.substring(1)
         println filePath
